@@ -3,7 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"github.com/joho/godotenv"
 )
+
+func init() {
+	// Load .env file if present. Ignore errors because env vars may be
+	// provided via the environment in production.
+	_ = godotenv.Load()
+}
 
 func main() {
 	if len(os.Args) < 2 {

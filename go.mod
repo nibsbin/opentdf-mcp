@@ -5,6 +5,7 @@ go 1.25.1
 require (
 	github.com/opentdf/platform/protocol/go v0.11.0
 	github.com/opentdf/platform/sdk v0.8.0
+	github.com/joho/godotenv v1.5.1
 )
 
 require (
