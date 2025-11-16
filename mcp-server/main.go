@@ -20,7 +20,8 @@ import (
 // Tool input/output schemas
 // EncryptToolInput defines the input for the encrypt tool
 type EncryptToolInput struct {
-	Data       string   `json:"data" jsonschema:"The data to encrypt"`
+	Input      string   `json:"input,omitempty" jsonschema:"Path to plaintext file to encrypt (mutually exclusive with data)"`
+	Data       string   `json:"data,omitempty" jsonschema:"Literal data to encrypt (mutually exclusive with input)"`
 	Attributes []string `json:"attributes" jsonschema:"Data attributes (FQNs) to apply during encryption"`
 	Format     string   `json:"format,omitempty" jsonschema:"Output format: 'tdf' or 'nano' (default: nano)"`
 	Output     string   `json:"output,omitempty" jsonschema:"Output file path (optional, returns base64 if not specified)"`
@@ -92,6 +93,28 @@ func MCPEncrypt(ctx context.Context, req *mcp.CallToolRequest, input EncryptTool
 	}
 	defer client.Close()
 
+	// Validate input: either Input or Data must be provided, but not both
+	if input.Input != "" && input.Data != "" {
+		return nil, EncryptToolOutput{Success: false, Error: "cannot specify both 'input' and 'data' parameters"}, nil
+	}
+	if input.Input == "" && input.Data == "" {
+		return nil, EncryptToolOutput{Success: false, Error: "must specify either 'input' (file path) or 'data' (literal data)"}, nil
+	}
+
+	// Get the data to encrypt
+	var dataToEncrypt string
+	if input.Input != "" {
+		// Read file contents
+		fileData, err := os.ReadFile(input.Input)
+		if err != nil {
+			return nil, EncryptToolOutput{Success: false, Error: fmt.Sprintf("failed to read input file: %v", err)}, nil
+		}
+		dataToEncrypt = string(fileData)
+	} else {
+		// Use literal data
+		dataToEncrypt = input.Data
+	}
+
 	// Determine format
 	useNano := input.Format == "" || input.Format == "nano"
 
@@ -105,7 +128,7 @@ func MCPEncrypt(ctx context.Context, req *mcp.CallToolRequest, input EncryptTool
 	}
 
 	// Encrypt
-	reader := strings.NewReader(input.Data)
+	reader := strings.NewReader(dataToEncrypt)
 	file, err := os.Create(outputFile)
 	if err != nil {
 		return nil, EncryptToolOutput{Success: false, Error: fmt.Sprintf("failed to create output file: %v", err)}, nil
@@ -301,7 +324,7 @@ func runMCPServer() error {
 	// Add encrypt tool
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "encrypt",
-		Description: "Encrypt data using OpenTDF with the specified attributes. Creates a TDF or nanoTDF file. Use nanoTDF format for better compatibility.",
+		Description: "Encrypt data using OpenTDF with the specified attributes. Creates a TDF or nanoTDF file. Use nanoTDF format for better compatibility. Specify either 'input' (file path) or 'data' (literal text).",
 	}, MCPEncrypt)
 
 	// Add decrypt tool
