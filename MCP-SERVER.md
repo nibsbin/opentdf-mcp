@@ -16,7 +16,7 @@ Encrypt data using OpenTDF with specified data attributes.
 **Parameters:**
 - `data` (required): The plaintext data to encrypt
 - `attributes` (required): Array of attribute FQNs to apply
-- `outputFile` (optional): Output file path (default: encrypted.nano)
+- `outputFile` (optional): Output file path (default: encrypted.ntdf)
 - `useNano` (optional): Use nanoTDF format (default: true)
 
 **Example:**
@@ -37,7 +37,7 @@ Decrypt a TDF or nanoTDF file and return the plaintext.
 **Example:**
 ```json
 {
-  "inputFile": "encrypted.nano"
+  "inputFile": "encrypted.ntdf"
 }
 ```
 
@@ -145,7 +145,7 @@ Once configured in your MCP client, you can use natural language:
 The AI assistant will call the `encrypt` tool with the appropriate parameters.
 
 ### Decrypt a File
-> "Decrypt the file encrypted.nano and show me the contents"
+> "Decrypt the file encrypted.ntdf and show me the contents"
 
 ### List Attributes
 > "Show me all available OpenTDF attributes in verbose mode"

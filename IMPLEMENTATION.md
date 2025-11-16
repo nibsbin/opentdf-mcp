@@ -31,7 +31,7 @@ An MCP (Model Context Protocol) server for OpenTDF that exposes encryption, decr
 - **Purpose:** Decrypt TDF or nanoTDF files
 - **Input:** inputFile path
 - **Output:** Success status, decrypted data, error
-- **Use Case:** "Decrypt encrypted.nano and show me the contents"
+- **Use Case:** "Decrypt encrypted.ntdf and show me the contents"
 
 ### 3. list_attributes
 - **Purpose:** List available data attributes from the platform
@@ -110,7 +110,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
 Once configured, interact naturally:
 - "Encrypt 'sensitive data' with the secret attribute"
 - "List all attributes"
-- "Decrypt encrypted.nano"
+- "Decrypt encrypted.ntdf"
 
 ## Key Features
 

@@ -98,7 +98,7 @@ func MCPEncrypt(ctx context.Context, req *mcp.CallToolRequest, input EncryptTool
 	outputFile := input.Output
 	if outputFile == "" {
 		if useNano {
-			outputFile = "encrypted.nano"
+			outputFile = "encrypted.ntdf"
 		} else {
 			outputFile = "encrypted.tdf"
 		}

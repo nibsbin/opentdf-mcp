@@ -132,7 +132,7 @@ Once configured in an MCP client, you can use natural language to interact with 
 
 - "Encrypt 'Hello World' with the attribute https://example.com/attr/class/value/secret"
 - "List all available attributes"
-- "Decrypt the file encrypted.nano"
+- "Decrypt the file encrypted.ntdf"
 
 The MCP tools provide structured responses with success/failure status and detailed error messages.
 
@@ -149,7 +149,7 @@ without needing external KAS hostnames is to use nanoTDF mode. Nano mode
 uses the platform's KAS at `<OPENTDF_PLATFORM_ENDPOINT>/kas`.
 
 ```bash
-./opentdf-cli encrypt -a https://example.com/attr/attr1/value/value1 -o encrypted.nano "Hello Nano"
+./opentdf-cli encrypt -a https://example.com/attr/attr1/value/value1 -o encrypted.ntdf "Hello Nano"
 ```
 
 Encrypt (standard TDF — advanced)
@@ -196,7 +196,7 @@ use the demo client credentials which are configured in the fixtures and
 have the required KAS permissions for the example attributes:
 
 ```bash
-OPENTDF_CLIENT_ID=opentdf-sdk OPENTDF_CLIENT_SECRET=secret ./opentdf-cli decrypt encrypted.nano > decrypted.txt
+OPENTDF_CLIENT_ID=opentdf-sdk OPENTDF_CLIENT_SECRET=secret ./opentdf-cli decrypt encrypted.ntdf > decrypted.txt
 cat decrypted.txt
 # expected output: Hello Nano
 ```
